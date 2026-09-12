@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#081d2e">
+  <meta name="description" content="Prototype de pilotage énergétique multisite pour la Ville de Gennevilliers.">
+  <title>Gennevilliers Énergie — Prototype 26DPB11</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Aller au contenu</a>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Navigation principale">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span>G</span></div>
+        <div>
+          <strong>Gennevilliers</strong>
+          <span>Énergie</span>
+        </div>
+      </div>
+
+      <div class="demo-badge"><span></span>Données de démonstration</div>
+
+      <nav class="nav-list">
+        <button class="nav-item active" data-view="overview"><span data-icon="grid"></span><span>Vue d’ensemble</span></button>
+        <button class="nav-item" data-view="sites"><span data-icon="building"></span><span>Patrimoine</span><small>169</small></button>
+        <button class="nav-item" data-view="twin"><span data-icon="pulse"></span><span>Jumeau énergétique</span></button>
+        <button class="nav-item" data-view="invoices"><span data-icon="invoice"></span><span>Factures</span><small class="nav-alert">8</small></button>
+        <button class="nav-item" data-view="alerts"><span data-icon="alert"></span><span>Alertes</span><small class="nav-alert">12</small></button>
+        <button class="nav-item" data-view="forecast"><span data-icon="chart"></span><span>Prévisions</span></button>
+        <button class="nav-item" data-view="assistant"><span data-icon="spark"></span><span>Assistant & formation</span></button>
+        <button class="nav-item" data-view="reversibility"><span data-icon="export"></span><span>Réversibilité</span></button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <button class="infra-card" data-view="security">
+          <span class="infra-icon" data-icon="shield"></span>
+          <span><strong>Infrastructure double</strong><small><i></i> Production opérationnelle</small></span>
+          <span data-icon="chevron"></span>
+        </button>
+        <div class="user-card">
+          <div class="avatar">SM</div>
+          <div><strong>Sonia Martin</strong><span>Administratrice énergie</span></div>
+          <button aria-label="Options du compte" data-icon="more"></button>
+        </div>
+      </div>
+    </aside>
+
+    <main id="mainContent">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="mobileMenu" class="icon-button mobile-only" aria-label="Ouvrir le menu" aria-expanded="false"><span data-icon="menu"></span></button>
+          <div>
+            <p class="eyebrow">Pilotage énergétique municipal</p>
+            <h1 id="currentViewLabel">Vue d’ensemble</h1>
+          </div>
+        </div>
+        <div class="top-actions">
+          <div class="sync-status" title="Dernière synchronisation simulée">
+            <span class="sync-dot"></span><span id="apiStatusText">API synchronisées</span><small id="apiStatusDetail">il y a 4 min</small>
+          </div>
+          <button class="secondary-button presentation-button" id="presentationMode"><span data-icon="screen"></span>Présentation</button>
+          <button class="icon-button notification-button" data-view="alerts" aria-label="Voir les alertes"><span data-icon="bell"></span><i>12</i></button>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="view active" id="view-overview" aria-labelledby="overview-title">
+          <div class="view-heading">
+            <div>
+              <div class="title-row"><h2 id="overview-title">Performance du patrimoine</h2><span class="live-chip"><i></i> Actualisé</span></div>
+              <p>Une lecture consolidée de l’énergie, des coûts et du carbone.</p>
+            </div>
+            <div class="filters">
+              <label><span>Patrimoine</span><select id="siteFilter"><option value="all">Tous les sites</option><option value="municipal">Bâtiments municipaux</option><option value="schools">Écoles</option><option value="sports">Équipements sportifs</option><option value="lighting">Éclairage public</option></select></label>
+              <label><span>Période</span><select id="periodFilter"><option value="month">Ce mois</option><option value="quarter">Ce trimestre</option><option value="year">Cette année</option></select></label>
+            </div>
+          </div>
+
+          <div class="kpi-grid">
+            <article class="kpi-card">
+              <div class="kpi-top"><span class="metric-icon cyan" data-icon="bolt"></span><span class="trend positive">−8,4 %</span></div>
+              <p>Consommation totale</p><h3 data-kpi="energy">2,48 GWh</h3><small>vs période de référence</small>
+            </article>
+            <article class="kpi-card">
+              <div class="kpi-top"><span class="metric-icon amber" data-icon="euro"></span><span class="trend negative">+3,1 %</span></div>
+              <p>Coût énergétique</p><h3 data-kpi="cost">412 680 €</h3><small>budget : 428 000 €</small>
+            </article>
+            <article class="kpi-card">
+              <div class="kpi-top"><span class="metric-icon green" data-icon="leaf"></span><span class="trend positive">−11,2 %</span></div>
+              <p>Émissions carbone</p><h3 data-kpi="carbon">286 tCO₂e</h3><small>trajectoire annuelle</small>
+            </article>
+            <article class="kpi-card">
+              <div class="kpi-top"><span class="metric-icon purple" data-icon="target"></span><span class="trend neutral">83 %</span></div>
+              <p>Sites dans la cible</p><h3 data-kpi="sites">140 / 169</h3><small>objectifs personnalisés</small>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="card consumption-card">
+              <div class="card-header">
+                <div><h3>Consommation & prévision</h3><p>Énergie finale consolidée — MWh</p></div>
+                <div class="chart-legend"><span><i class="actual"></i>Réel</span><span><i class="reference"></i>Référence</span><span><i class="forecast"></i>Prévision</span></div>
+              </div>
+              <div id="energyChart" class="chart-container" role="img" aria-label="Évolution de la consommation réelle, de référence et prévisionnelle"></div>
+              <div class="chart-insight"><span data-icon="spark"></span><p><strong>Décembre devrait rester 6,7 % sous la référence.</strong> Prévision calculée à météo et fréquentation normalisées.</p><button data-view="forecast">Voir le détail</button></div>
+            </article>
+
+            <article class="card priority-card">
+              <div class="card-header"><div><h3>Sites à prioriser</h3><p>Score de dérive sur 100</p></div><button class="text-button" data-view="sites">Tout voir</button></div>
+              <div id="priorityList" class="priority-list"></div>
+            </article>
+
+            <article class="card alerts-card">
+              <div class="card-header"><div><h3>Alertes actives</h3><p>12 événements à qualifier</p></div><button class="text-button" data-view="alerts">Centre d’alertes</button></div>
+              <div id="overviewAlerts" class="compact-alerts"></div>
+            </article>
+
+            <article class="card recommendation-card">
+              <div class="recommendation-head"><span class="metric-icon gradient" data-icon="spark"></span><div><span>Recommandation à valider</span><h3>Réduire la consigne nocturne</h3></div><span class="potential">−12,4 MWh/an</span></div>
+              <p>Au Centre nautique, la température moyenne reste 2,1 °C au-dessus de la consigne entre 23 h et 5 h, sans fréquentation.</p>
+              <div class="recommendation-meta"><span><i data-icon="euro"></i>Gain estimé 2 180 €/an</span><span><i data-icon="leaf"></i>1,7 tCO₂e/an</span><span><i data-icon="clock"></i>Confiance 89 %</span></div>
+              <div class="card-actions"><button class="primary-button" id="reviewRecommendation">Examiner</button><button class="ghost-button" id="dismissRecommendation">Plus tard</button></div>
+              <small class="human-note"><span data-icon="usercheck"></span>Aucune action n’est appliquée sans validation humaine.</small>
+            </article>
+          </div>
+
+          <div class="source-strip">
+            <div><span data-icon="link"></span><strong>12 sources connectées</strong><small>Enedis · GRDF · Suez · OPERAT · Orange Live Objects · Sigfox · GTB/GTC</small></div>
+            <button class="secondary-button" data-view="reversibility">Voir les flux</button>
+          </div>
+        </section>
+
+        <section class="view" id="view-sites" aria-labelledby="sites-title">
+          <div class="view-heading">
+            <div><h2 id="sites-title">Patrimoine énergétique</h2><p>169 sites, 446 points de livraison et 9 000 points de données.</p></div>
+            <button class="secondary-button" id="exportSites"><span data-icon="download"></span>Exporter</button>
+          </div>
+          <div class="stats-ribbon">
+            <div><strong>118</strong><span>sites municipaux</span></div><div><strong>51</strong><span>postes éclairage</span></div><div><strong>253</strong><span>PDL électricité</span></div><div><strong>40</strong><span>points gaz</span></div><div><strong>35</strong><span>réseaux chaleur</span></div><div><strong>118</strong><span>compteurs eau</span></div>
+          </div>
+          <article class="card table-card">
+            <div class="table-toolbar">
+              <div class="search-field"><span data-icon="search"></span><input id="siteSearch" type="search" placeholder="Rechercher un site…" aria-label="Rechercher un site"></div>
+              <div class="segmented" aria-label="Filtrer les sites">
+                <button class="active" data-site-category="all">Tous</button><button data-site-category="municipal">Municipal</button><button data-site-category="school">Écoles</button><button data-site-category="sport">Sport</button><button data-site-category="lighting">Éclairage</button>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Site</th><th>Énergie</th><th>Ce mois</th><th>Écart normalisé</th><th>État</th><th><span class="sr-only">Ouvrir</span></th></tr></thead>
+                <tbody id="sitesTableBody"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section class="view" id="view-twin" aria-labelledby="twin-title">
+          <div class="view-heading">
+            <div><div class="title-row"><h2 id="twin-title">Jumeau énergétique</h2><span class="beta-chip">Simulation</span></div><p>Croiser énergie, météo, température intérieure et fréquentation.</p></div>
+            <label class="standalone-select"><span>Site analysé</span><select id="twinSite"><option>Centre nautique</option><option>Hôtel de Ville</option><option>École des Grésillons</option><option>Gymnase Jean Guimier</option></select></label>
+          </div>
+          <div class="twin-layout">
+            <article class="card building-twin">
+              <div class="twin-topline"><span><i></i>Capteurs en direct</span><small>Dernière donnée : 10:42</small></div>
+              <div class="building-visual" aria-label="Schéma énergétique simplifié du bâtiment">
+                <div class="weather-pill"><span data-icon="cloud"></span><strong>8,4 °C</strong><small>Extérieur</small></div>
+                <div class="building-shell">
+                  <div class="roof"></div>
+                  <div class="floor">
+                    <div><span>Bassin</span><strong>27,8 °C</strong><small>312 ppm CO₂</small></div>
+                    <i class="heat high"></i>
+                  </div>
+                  <div class="floor">
+                    <div><span>Accueil</span><strong>22,1 °C</strong><small>648 ppm CO₂</small></div>
+                    <i class="heat medium"></i>
+                  </div>
+                  <div class="floor">
+                    <div><span>Locaux techniques</span><strong>24,6 °C</strong><small>Départ 61 °C</small></div>
+                    <i class="heat high"></i>
+                  </div>
+                </div>
+                <div class="sensor-pill"><span data-icon="users"></span><strong>184</strong><small>personnes présentes</small></div>
+              </div>
+              <div class="live-metrics">
+                <div><span>Puissance instantanée</span><strong id="instantConsumption">286 kW</strong></div>
+                <div><span>Écart thermique</span><strong id="thermalGap">19,4 °C</strong></div>
+                <div><span>Indice de dérive</span><strong class="warning" id="driftIndex">74 / 100</strong></div>
+              </div>
+            </article>
+
+            <article class="card scenario-panel">
+              <div class="card-header"><div><h3>Tester un scénario</h3><p>Les résultats ne déclenchent aucune commande.</p></div><span data-icon="sliders"></span></div>
+              <div class="range-control">
+                <div><label for="tempSlider">Consigne intérieure</label><output id="tempOutput">22 °C</output></div>
+                <input id="tempSlider" type="range" min="18" max="24" step=".5" value="22">
+                <div class="range-labels"><span>18 °C</span><span>24 °C</span></div>
+              </div>
+              <div class="range-control">
+                <div><label for="occupancySlider">Fréquentation moyenne</label><output id="occupancyOutput">184 pers.</output></div>
+                <input id="occupancySlider" type="range" min="40" max="350" step="5" value="184">
+                <div class="range-labels"><span>40</span><span>350</span></div>
+              </div>
+              <div class="range-control">
+                <div><label for="scheduleSlider">Amplitude d’ouverture</label><output id="scheduleOutput">14 h/j</output></div>
+                <input id="scheduleSlider" type="range" min="7" max="18" step="1" value="14">
+                <div class="range-labels"><span>7 h</span><span>18 h</span></div>
+              </div>
+              <div class="simulation-result">
+                <span>Consommation annuelle simulée</span>
+                <strong id="simulatedEnergy">1 824 MWh</strong>
+                <p id="simulatedDelta"><b>−6,8 %</b> par rapport au scénario actuel</p>
+              </div>
+              <button class="primary-button full-width" id="saveScenario"><span data-icon="save"></span>Enregistrer le scénario</button>
+            </article>
+
+            <article class="card evidence-card">
+              <div class="card-header"><div><h3>Suspicion de déperdition thermique</h3><p>Signal d’aide au diagnostic, distinct d’un DPE réglementaire.</p></div><span class="score-ring">74</span></div>
+              <div class="evidence-list">
+                <div><span class="evidence-dot critical"></span><p><strong>Décroissance nocturne lente</strong><small>+38 % vs bâtiments comparables</small></p></div>
+                <div><span class="evidence-dot warning"></span><p><strong>Écart intérieur / extérieur élevé</strong><small>19,4 °C durant 7 h sans occupation</small></p></div>
+                <div><span class="evidence-dot positive"></span><p><strong>Qualité des données suffisante</strong><small>96 % de complétude sur 90 jours</small></p></div>
+              </div>
+              <div class="method-note"><span data-icon="info"></span><p>Analyse corrigée par les DJU, l’occupation et les horaires. Une visite technique reste nécessaire pour confirmer l’origine.</p></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-invoices" aria-labelledby="invoices-title">
+          <div class="view-heading">
+            <div><h2 id="invoices-title">Factures & rapprochement comptable</h2><p>Contrôle des montants, index, contrats et statut de paiement.</p></div>
+            <button class="primary-button" id="importInvoice"><span data-icon="upload"></span>Importer une facture</button>
+          </div>
+          <div class="kpi-grid invoice-kpis">
+            <article class="kpi-card compact"><p>À payer</p><h3>78 420 €</h3><small>23 factures</small></article>
+            <article class="kpi-card compact"><p>Payé ce mois</p><h3>286 190 €</h3><small>94 factures</small></article>
+            <article class="kpi-card compact"><p>Écarts détectés</p><h3 class="text-warning">8</h3><small>12 640 € à contrôler</small></article>
+            <article class="kpi-card compact"><p>Taux de rapprochement</p><h3>96,7 %</h3><small>automatique + validé</small></article>
+          </div>
+          <article class="card table-card">
+            <div class="table-toolbar">
+              <div class="search-field"><span data-icon="search"></span><input id="invoiceSearch" type="search" placeholder="N° de facture, site, fournisseur…" aria-label="Rechercher une facture"></div>
+              <div class="segmented" aria-label="Filtrer les factures">
+                <button class="active" data-invoice-status="all">Toutes</button><button data-invoice-status="paid">Payées</button><button data-invoice-status="pending">À payer</button><button data-invoice-status="anomaly">Anomalies</button>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Facture</th><th>Fournisseur / site</th><th>Période</th><th>Montant TTC</th><th>Rapprochement</th><th>Paiement</th><th></th></tr></thead>
+                <tbody id="invoiceTableBody"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section class="view" id="view-alerts" aria-labelledby="alerts-title">
+          <div class="view-heading">
+            <div><h2 id="alerts-title">Centre d’alertes</h2><p>Détecter, qualifier, assigner et tracer chaque événement.</p></div>
+            <button class="secondary-button" id="alertRules"><span data-icon="settings"></span>Règles d’alerte</button>
+          </div>
+          <div class="alert-workspace">
+            <article class="card alert-list-card">
+              <div class="table-toolbar alert-toolbar">
+                <div class="segmented"><button class="active" data-alert-level="all">Toutes <b>12</b></button><button data-alert-level="critical">Critiques <b>3</b></button><button data-alert-level="warning">À surveiller <b>9</b></button></div>
+              </div>
+              <div id="allAlerts" class="all-alerts"></div>
+            </article>
+            <article class="card alert-detail" id="alertDetail"></article>
+          </div>
+        </section>
+
+        <section class="view" id="view-forecast" aria-labelledby="forecast-title">
+          <div class="view-heading">
+            <div><div class="title-row"><h2 id="forecast-title">Prévisions budgétaires & énergie</h2><span class="beta-chip">Aide à la décision</span></div><p>Comparer des hypothèses transparentes, sans engagement de résultat.</p></div>
+            <label class="standalone-select"><span>Horizon</span><select id="forecastScenario"><option value="12">12 mois</option><option value="24">24 mois</option><option value="48">48 mois</option></select></label>
+          </div>
+          <div class="forecast-layout">
+            <article class="card forecast-main">
+              <div class="card-header">
+                <div><h3>Projection du coût énergétique</h3><p>Scénario sélectionné, en milliers d’euros</p></div>
+                <div class="forecast-total"><span>Prévision annuelle</span><strong id="forecastAmount">4,86 M€</strong><small id="forecastDifference">+3,2 % vs budget</small></div>
+              </div>
+              <div id="forecastChart" class="chart-container forecast-chart" role="img" aria-label="Prévision mensuelle du coût énergétique"></div>
+              <div class="scenario-tabs">
+                <button data-scenario="low"><span class="scenario-dot green"></span><b>Sobriété</b><small>Prix −4 % · usages −8 %</small></button>
+                <button class="active" data-scenario="central"><span class="scenario-dot blue"></span><b>Central</b><small>Prix +3 % · usages −2 %</small></button>
+                <button data-scenario="stress"><span class="scenario-dot coral"></span><b>Tension</b><small>Prix +14 % · usages stables</small></button>
+              </div>
+            </article>
+            <article class="card assumptions-card">
+              <div class="card-header"><div><h3>Hypothèses documentées</h3><p>Modifiables et historisées</p></div><button class="icon-button" id="forecastMethod" aria-label="Voir la méthode"><span data-icon="info"></span></button></div>
+              <div class="assumption-list">
+                <div><span>Évolution prix électricité</span><strong>+3,0 %</strong></div>
+                <div><span>Évolution prix gaz</span><strong>+4,5 %</strong></div>
+                <div><span>DJU vs normale 10 ans</span><strong>+1,2 %</strong></div>
+                <div><span>Fréquentation prévisionnelle</span><strong>+2,0 %</strong></div>
+                <div><span>Actions déjà validées</span><strong>−148 MWh</strong></div>
+              </div>
+              <div class="method-note"><span data-icon="shield"></span><p>Fourchette d’incertitude affichée : ±7,8 %. Les économies sont estimées puis mesurées, jamais garanties.</p></div>
+            </article>
+            <article class="card trajectory-card">
+              <div><span class="metric-icon green" data-icon="leaf"></span><p>Trajectoire carbone 2030</p><strong>−34 %</strong><small>objectif paramétré : −40 %</small></div>
+              <div class="trajectory-line"><i style="width:74%"></i><span style="left:86%"></span></div>
+              <p class="trajectory-caption">6 points d’écart à traiter · plan d’actions simulé disponible</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-assistant" aria-labelledby="assistant-title">
+          <div class="view-heading">
+            <div><div class="title-row"><h2 id="assistant-title">Assistant métier & formation</h2><span class="ai-chip"><span data-icon="spark"></span>IA encadrée</span></div><p>Comprendre les données, préparer une analyse et faire progresser les équipes.</p></div>
+          </div>
+          <div class="assistant-layout">
+            <article class="card chat-card">
+              <div class="chat-header"><div class="assistant-avatar"><span data-icon="spark"></span></div><div><strong>ÉcoPilot</strong><span><i></i> Assistant disponible</span></div><button class="icon-button" aria-label="Informations sur l’assistant" id="assistantInfo"><span data-icon="info"></span></button></div>
+              <div class="chat-messages" id="chatMessages" aria-live="polite">
+                <div class="message assistant-message">
+                  <div class="assistant-avatar small"><span data-icon="spark"></span></div>
+                  <div><p>Bonjour Sonia. Je peux expliquer une dérive, comparer des sites ou préparer une synthèse. Toute recommandation reste soumise à validation humaine.</p><span>10:44</span></div>
+                </div>
+              </div>
+              <div class="prompt-chips">
+                <button data-prompt="Pourquoi le Centre nautique dérive-t-il ?">Expliquer la dérive du Centre nautique</button>
+                <button data-prompt="Quels sites prioriser cette semaine ?">Priorités de la semaine</button>
+                <button data-prompt="Prépare une synthèse pour la direction.">Synthèse direction</button>
+              </div>
+              <form id="chatForm" class="chat-input">
+                <label class="sr-only" for="chatInput">Poser une question</label>
+                <input id="chatInput" autocomplete="off" placeholder="Interroger les données du patrimoine…">
+                <button type="submit" class="primary-icon-button" aria-label="Envoyer"><span data-icon="send"></span></button>
+              </form>
+              <small class="privacy-note"><span data-icon="shield"></span>Les données de la Ville ne servent pas à entraîner un modèle public.</small>
+            </article>
+
+            <div class="learning-column">
+              <article class="card learning-card">
+                <div class="card-header"><div><span class="section-kicker">Parcours recommandé</span><h3>Devenir référent énergie</h3></div><span class="progress-badge">68 %</span></div>
+                <div class="progress-track"><i style="width:68%"></i></div>
+                <div class="module-list">
+                  <button class="completed"><span data-icon="check"></span><p><strong>Lire un profil de charge</strong><small>Terminé · 18 min</small></p></button>
+                  <button class="completed"><span data-icon="check"></span><p><strong>Qualifier une alerte</strong><small>Terminé · 24 min</small></p></button>
+                  <button class="current" id="startModule"><span>3</span><p><strong>Normaliser par DJU & fréquentation</strong><small>À reprendre · 12 min restantes</small></p><i data-icon="play"></i></button>
+                  <button><span>4</span><p><strong>Mesurer une économie</strong><small>20 min</small></p><i data-icon="lock"></i></button>
+                </div>
+              </article>
+              <article class="card certificate-card">
+                <span class="certificate-icon" data-icon="award"></span>
+                <div><strong>Attestation interne de compétences</strong><p>Délivrée après validation des 6 modules et du cas pratique.</p><small>Document interne — ne constitue pas une certification officielle.</small></div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-reversibility" aria-labelledby="reversibility-title">
+          <div class="view-heading">
+            <div><h2 id="reversibility-title">Données, API & réversibilité</h2><p>Des flux documentés, contrôlables et exportables à tout moment.</p></div>
+            <button class="primary-button" id="runExport"><span data-icon="export"></span>Lancer un export complet</button>
+          </div>
+          <div class="source-grid">
+            <article class="card source-card"><span class="source-logo electric">E</span><div><strong>Enedis</strong><small>253 PDL · courbes & index</small></div><span class="status-pill success">Connecté</span></article>
+            <article class="card source-card"><span class="source-logo gas">G</span><div><strong>GRDF</strong><small>40 PCE · consommations</small></div><span class="status-pill success">Connecté</span></article>
+            <article class="card source-card"><span class="source-logo water">S</span><div><strong>Suez</strong><small>118 compteurs eau</small></div><span class="status-pill success">Connecté</span></article>
+            <article class="card source-card"><span class="source-logo operat">O</span><div><strong>OPERAT</strong><small>Déclarations & objectifs</small></div><span class="status-pill success">Connecté</span></article>
+            <article class="card source-card"><span class="source-logo orange">OL</span><div><strong>Orange Live Objects</strong><small>Capteurs IoT</small></div><span class="status-pill success">Connecté</span></article>
+            <article class="card source-card"><span class="source-logo sigfox">S</span><div><strong>Sigfox / IoT</strong><small>800 objets supervisés</small></div><span class="status-pill warning">2 à vérifier</span></article>
+          </div>
+          <div class="reversibility-layout">
+            <article class="card export-card">
+              <div class="card-header"><div><h3>Export quotidien automatisé</h3><p>Dépôt SFTP chiffré · formats ouverts</p></div><span class="status-pill success"><i></i> Actif</span></div>
+              <div class="export-preview">
+                <div class="code-toolbar"><span>consommations_2026-09-12.csv</span><small>UTF-8 · 24,8 Mo</small></div>
+                <pre><code><span>site_id;point_id;horodatage;valeur;unite</span>
+GEN-042;PDL-253;2026-09-12T10:30;286.4;kWh
+GEN-017;PCE-040;2026-09-12T10:30;81.2;kWh
+GEN-088;EAU-118;2026-09-12T10:30;2.34;m3</code></pre>
+              </div>
+              <div class="export-options"><span><i data-icon="check"></i>CSV documenté</span><span><i data-icon="check"></i>JSON via API</span><span><i data-icon="check"></i>Pièces originales</span><span><i data-icon="check"></i>Dictionnaire de données</span></div>
+              <button class="secondary-button" id="downloadCsv"><span data-icon="download"></span>Télécharger un exemple CSV</button>
+            </article>
+            <article class="card api-card">
+              <div class="card-header"><div><h3>API ouverte & documentée</h3><p>Lecture sécurisée des données consolidées</p></div><span class="api-method">GET</span></div>
+              <div class="endpoint"><span>/api/v1/sites/{site_id}/consumptions</span><button aria-label="Copier l’adresse API" id="copyEndpoint" data-icon="copy"></button></div>
+              <div class="api-facts"><div><span>Authentification</span><strong>OAuth 2.0</strong></div><div><span>Documentation</span><strong>OpenAPI 3.1</strong></div><div><span>Quota standard</span><strong>60 req/min</strong></div></div>
+              <div class="method-note"><span data-icon="info"></span><p>La Ville conserve la propriété, l’accès et la portabilité de l’ensemble de ses données et historiques.</p></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-security" aria-labelledby="security-title">
+          <div class="view-heading">
+            <div><div class="title-row"><h2 id="security-title">Sécurité & continuité</h2><span class="live-chip"><i></i> Services disponibles</span></div><p>Architecture redondée, données hébergées en France et restauration testée.</p></div>
+          </div>
+          <div class="security-hero card">
+            <div class="shield-visual"><span data-icon="shield"></span><i></i></div>
+            <div><span class="section-kicker">Architecture double</span><h3>Production et secours isolés</h3><p>Bascule supervisée, sauvegardes immuables et journalisation centralisée pour maintenir le service et protéger les données de la Ville.</p></div>
+            <div class="availability"><span>Disponibilité cible</span><strong>99,5 %</strong><small>SLA contractuel proposé</small></div>
+          </div>
+          <div class="security-grid">
+            <article class="card security-card"><span data-icon="server"></span><div><h3>Hébergement France</h3><p>Production et sauvegardes sur des régions françaises proposées, données chiffrées au repos et en transit.</p></div><span class="status-pill success">Conforme offre</span></article>
+            <article class="card security-card"><span data-icon="key"></span><div><h3>Accès renforcés</h3><p>MFA, rôles fins, SSO possible, moindre privilège et traces d’administration.</p></div><span class="status-pill success">MFA actif</span></article>
+            <article class="card security-card"><span data-icon="backup"></span><div><h3>Sauvegarde 3-2-1-1-0</h3><p>Trois copies, deux supports, une hors site, une immutable et zéro erreur après contrôle.</p></div><span class="status-pill success">Testée J−7</span></article>
+            <article class="card security-card"><span data-icon="refresh"></span><div><h3>Reprise en moins de 4 h</h3><p>Procédure documentée, exercices réguliers et environnement de préproduction inclus.</p></div><span class="status-pill success">RTO &lt; 4 h</span></article>
+          </div>
+          <article class="card security-timeline">
+            <div class="card-header"><div><h3>Derniers contrôles</h3><p>Journal de démonstration</p></div><button class="secondary-button" id="downloadSecurity"><span data-icon="download"></span>Rapport</button></div>
+            <div class="timeline-list"><div><span data-icon="check"></span><p><strong>Restauration d’un jeu complet</strong><small>Réussie en 2 h 37 · 5 septembre 2026</small></p></div><div><span data-icon="check"></span><p><strong>Revue des comptes à privilèges</strong><small>0 compte orphelin · 2 septembre 2026</small></p></div><div><span data-icon="check"></span><p><strong>Contrôle d’intégrité des sauvegardes</strong><small>100 % conforme · quotidien</small></p></div></div>
+          </article>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="drawer" id="siteDrawer" aria-hidden="true" aria-label="Détail du site">
+    <button class="drawer-close icon-button" id="drawerClose" aria-label="Fermer"><span data-icon="close"></span></button>
+    <div id="drawerContent"></div>
+  </aside>
+
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close icon-button" id="modalClose" aria-label="Fermer"><span data-icon="close"></span></button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
