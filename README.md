@@ -71,4 +71,3 @@ désactive la mise en cache des API.
 Pour la production contractuelle, ajouter l’authentification SSO/MFA, une
 base persistante, l’audit centralisé, la gestion des rôles, les secrets
 hébergés et les connecteurs certifiés.
-# gennevilliers-energie
