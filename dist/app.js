@@ -541,7 +541,7 @@
     toast("Adresse copiée", endpoint);
   });
   qs("#downloadSecurity").addEventListener("click", function () {
-    downloadFile("rapport_controles_securite_demo.txt", "GENNEVILLIERS ÉNERGIE — RAPPORT DE DÉMONSTRATION\\n\\nDisponibilité cible : 99,5 %\\nRTO proposé : moins de 4 heures\\nSauvegarde : 3-2-1-1-0\\nDernier test de restauration : réussi en 2 h 37\\n\\nDonnées de démonstration.", "text/plain;charset=utf-8");
+    downloadFile("rapport_controles_securite_demo.txt", "GENNEVILLIERS ÉNERGIE — RAPPORT DE DÉMONSTRATION\\n\\nDisponibilité cible : 99,99 %\\nRTO proposé : moins de 4 heures\\nSauvegarde : 3-2-1-1-0\\nDernier test de restauration : réussi en 2 h 37\\n\\nDonnées de démonstration.", "text/plain;charset=utf-8");
   });
 
   qs("#reviewRecommendation").addEventListener("click", function () {
